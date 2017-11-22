@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SanguoDict</string>
+    <string name="moments_toolbar_menu_camera">发表朋友圈</string>
 </resources>
