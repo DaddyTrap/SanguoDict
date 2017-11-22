@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cn.org.sanguodict.sanguodict.EditActivity">
+    tools:context="cn.org.sanguodict.sanguodict.activity.EditActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="300dp"

@@ -1,10 +1,11 @@
-package cn.org.sanguodict.sanguodict;
+package cn.org.sanguodict.sanguodict.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import cn.org.sanguodict.sanguodict.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditActivity extends AppCompatActivity {
