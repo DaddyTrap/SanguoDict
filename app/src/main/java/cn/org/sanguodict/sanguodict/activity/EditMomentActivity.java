@@ -213,6 +213,15 @@ public class EditMomentActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("Info", "On Pause, should save everything");
+        instance.saveEverything();
+    }
+
+    // Util Functions
+
     private byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;

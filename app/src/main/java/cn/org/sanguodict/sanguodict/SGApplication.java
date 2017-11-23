@@ -2,6 +2,7 @@ package cn.org.sanguodict.sanguodict;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -118,9 +119,7 @@ public class SGApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
         Log.i("Info", "SGApplication terminate");
-
-        // TODO: Save data to SQLite here
-        if (_debugDontSave) return;
+        saveEverything();
     }
 
     public List<Moment> getMoments() {
@@ -197,5 +196,33 @@ public class SGApplication extends Application {
                 ret.add(user);
         }
         return ret;
+    }
+
+    public void addUser(User user) {
+        user.userId = userList.getLast().userId + 1;
+        userList.add(user);
+    }
+
+    public void addMoment(Moment moment) {
+        moment.momentId = momentList.getLast().momentId + 1;
+        momentList.add(moment);
+    }
+
+    public void saveEverything() {
+        if (_debugDontSave) return;
+        // Brutal save -- clear and then insert
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // Clear tables
+        db.delete(DbHelper.USER_TABLE_NAME, null, null);
+        db.delete(DbHelper.MOMENT_TABLE_NAME, null, null);
+
+        // Insert users
+        for (User user : userList) {
+            db.insert(DbHelper.USER_TABLE_NAME, null, user.toContentValues());
+        }
+        // Insert moments
+        for (Moment moment : momentList) {
+            db.insert(DbHelper.MOMENT_TABLE_NAME, null, moment.toContentValues());
+        }
     }
 }

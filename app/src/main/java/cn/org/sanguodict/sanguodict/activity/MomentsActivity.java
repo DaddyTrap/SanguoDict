@@ -94,12 +94,22 @@ public class MomentsActivity extends AppCompatActivity {
 //                Moment moment = (Moment)data.getSerializableExtra("moment");
                 Moment moment = (Moment) instance.getTempObj();
                 Log.i("Info", "Result OK, Got: " + moment.toString());
-                momentListRef.add(moment);
+//                momentListRef.add(moment);
+                instance.addMoment(moment);
                 momentAdapter.notifyItemInserted(momentListRef.size() - 1);
                 recyclerView.smoothScrollToPosition(momentListRef.size() - 1);
             }
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("Info", "On Pause, should save everything");
+        instance.saveEverything();
+    }
+
+    // Util Functions
 
     private void initEveryThing() {
         setContentView(R.layout.activity_moments);

@@ -1,5 +1,7 @@
 package cn.org.sanguodict.sanguodict.model;
 
+import android.content.ContentValues;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +14,13 @@ public class User implements Serializable {
     public int userId;
     public String name;
     public String avatarBase64;
-    public char gender; // 0 for unknown, 1 for male, 2 for female
+    public int gender; // 0 for unknown, 1 for male, 2 for female
     public String birthDate;
     public String deathDate;
     public String nativePlace;
     public String force;
 
-    public User(int userId, String name, String avatarBase64, char gender, String birthDate, String deathDate, String nativePlace, String force) {
+    public User(int userId, String name, String avatarBase64, int gender, String birthDate, String deathDate, String nativePlace, String force) {
         this.userId = userId;
         this.name = name;
         this.avatarBase64 = avatarBase64;
@@ -30,6 +32,19 @@ public class User implements Serializable {
     }
 
     public User() {
-        this(-1, null, null, (char) 0, null, null, null, null);
+        this(-1, null, null, 0, null, null, null, null);
+    }
+
+    public ContentValues toContentValues() {
+        ContentValues ret = new ContentValues();
+        ret.put("userId", userId);
+        ret.put("name", name);
+        ret.put("avatarBase64", avatarBase64);
+        ret.put("gender", gender);
+        ret.put("birthDate", birthDate);
+        ret.put("deathDate", deathDate);
+        ret.put("nativePlace", nativePlace);
+        ret.put("force", force);
+        return ret;
     }
 }

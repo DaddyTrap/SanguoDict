@@ -1,5 +1,7 @@
 package cn.org.sanguodict.sanguodict.model;
 
+import android.content.ContentValues;
+
 import java.io.Serializable;
 
 /**
@@ -25,5 +27,16 @@ public class Moment implements Serializable {
 
     public Moment() {
         this(-1, -1, null, null, null, null);
+    }
+
+    public ContentValues toContentValues() {
+        ContentValues ret = new ContentValues();
+        ret.put("momentId", momentId);
+        ret.put("fromUser", fromUser);
+        ret.put("time", time);
+        ret.put("location", location);
+        ret.put("contentText", contentText);
+        ret.put("contentImgBase64", contentImgBase64);
+        return ret;
     }
 }
