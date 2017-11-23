@@ -23,4 +23,7 @@ public class Moment implements Serializable {
         this.contentImgBase64 = contentImgBase64;
     }
 
+    public Moment() {
+        this(-1, -1, null, null, null, null);
+    }
 }

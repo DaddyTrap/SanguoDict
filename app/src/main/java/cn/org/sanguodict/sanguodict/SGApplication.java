@@ -35,11 +35,16 @@ public class SGApplication extends Application {
     private LinkedList<User> userList;
     private int currentUserId;
 
+    // Used to transport large data -- Intent cannot save too large data
+    private Object tempObj;
+
     private Map<String, Bitmap> bitmapCache;
 
     public SQLiteOpenHelper dbHelper;
 
     public boolean hasReadStoragePermission = false;
+
+    public boolean _debugDontSave = false;
 
     @Override
     public void onCreate() {
@@ -112,9 +117,10 @@ public class SGApplication extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        Log.i("Info", "SGApplication finalize");
+        Log.i("Info", "SGApplication terminate");
 
         // TODO: Save data to SQLite here
+        if (_debugDontSave) return;
     }
 
     public List<Moment> getMoments() {
@@ -174,5 +180,22 @@ public class SGApplication extends Application {
             System.exit(0);
         }
         return false;
+    }
+
+    public void setTempObj(Object obj) {
+        tempObj = obj;
+    }
+
+    public Object getTempObj() {
+        return  tempObj;
+    }
+
+    public List<User> searchUserWithPartOfName(String partOfName) {
+        List<User> ret = new LinkedList<>();
+        for (User user : userList) {
+            if (user.name.contains(partOfName))
+                ret.add(user);
+        }
+        return ret;
     }
 }

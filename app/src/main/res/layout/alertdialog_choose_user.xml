@@ -7,7 +7,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/alertdialog_choose_user_search_edittext"
         android:hint="输入搜索名字"
-        android:drawableRight="@drawable/ic_search_gray_24dp" />
+        android:drawableRight="@drawable/ic_search_gray_24dp"
+        android:inputType="text"
+        android:maxLines="1"/>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
