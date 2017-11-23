@@ -1,13 +1,16 @@
 package cn.org.sanguodict.sanguodict;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
 import android.util.Log;
 
@@ -16,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import cn.org.sanguodict.sanguodict.activity.MomentsActivity;
 import cn.org.sanguodict.sanguodict.model.DbHelper;
 import cn.org.sanguodict.sanguodict.model.Moment;
 import cn.org.sanguodict.sanguodict.model.User;
@@ -34,6 +38,8 @@ public class SGApplication extends Application {
     private Map<String, Bitmap> bitmapCache;
 
     public SQLiteOpenHelper dbHelper;
+
+    public boolean hasReadStoragePermission = false;
 
     @Override
     public void onCreate() {
@@ -148,5 +154,25 @@ public class SGApplication extends Application {
         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         bitmapCache.put(strBase64, bm);
         return bm;
+    }
+
+    public boolean requestPermission(Activity activity, String permissionString, int requestCode) {
+        try {
+            int permission = ActivityCompat.checkSelfPermission(activity, permissionString);
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // No permission, request it
+                ActivityCompat.requestPermissions(activity, new String[] {permissionString}, requestCode);
+            } else {
+                // Permission granted
+                if (permissionString == MomentsActivity.READ_PERMISSION)
+                    hasReadStoragePermission = true;
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("Error", "Unknown Error");
+            System.exit(0);
+        }
+        return false;
     }
 }

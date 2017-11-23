@@ -2,8 +2,10 @@ package cn.org.sanguodict.sanguodict.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -37,16 +40,51 @@ public class MomentsActivity extends AppCompatActivity {
     private List<User> userListRef;
 
     private AlertDialog.Builder delMomentDialogBuilder;
+    private AlertDialog.Builder noPermissionDialogBuilder;
 
     public static final int EDIT_MOMENT_REQ_CODE = 1001;
+
+    public static final int REQ_PERMISSION_CODE = 101;
+
+    public static final String READ_PERMISSION = "android.permission.READ_EXTERNAL_STORAGE";
+
+    SGApplication instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SGApplication.getInstance().requestPermission(this, READ_PERMISSION, REQ_PERMISSION_CODE);
+
+        // Init nothing here because permission hasn't been got
+    }
+
+    static boolean begOnce = false;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // ok
+            initEveryThing();
+            // Set permission
+            SGApplication.getInstance().hasReadStoragePermission = true;
+        } else {
+            // No permission got
+            Log.i("Info", "No permission got");
+            initEveryThing();
+            if (begOnce) return;
+            begOnce = true;
+            noPermissionDialogBuilder.create().show();
+        }
+    }
+
+    private void initEveryThing() {
         setContentView(R.layout.activity_moments);
 
         getViews();
         setupDialogBuilder();
+        instance = SGApplication.getInstance();
 
         // Set Toolbar Cam
         toolbarCamicon.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +106,6 @@ public class MomentsActivity extends AppCompatActivity {
         });
 
         // Set RecyclerView
-        final SGApplication instance = SGApplication.getInstance();
         momentListRef = instance.getMoments();
         userListRef = instance.getUsers();
 
@@ -164,5 +201,18 @@ public class MomentsActivity extends AppCompatActivity {
         delMomentDialogBuilder.setTitle("删除朋友圈");
         delMomentDialogBuilder.setMessage("是否确定删除该朋友圈？");
 
+        noPermissionDialogBuilder = new AlertDialog.Builder(this);
+        noPermissionDialogBuilder.setTitle("没有给权限？");
+        noPermissionDialogBuilder.setMessage("这可能会造成该应用的运行异常，如不能选择图片等");
+        noPermissionDialogBuilder.setPositiveButton("给你权限", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SGApplication.getInstance().requestPermission(MomentsActivity.this, READ_PERMISSION, REQ_PERMISSION_CODE);
+            }
+        });
+        noPermissionDialogBuilder.setNegativeButton("滚", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
     }
 }
