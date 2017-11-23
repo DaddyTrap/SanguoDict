@@ -7,6 +7,48 @@
     tools:context="cn.org.sanguodict.sanguodict.activity.EditActivity">
 
     <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/sgColorAccent"
+        tools:layout_editor_absoluteX="8dp">
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_cancel"
+            android:textColor="@color/sgColorWhite"
+            android:textSize="15sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/save_image"
+            android:src="@drawable/ic_save_green_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/save"/>
+        <TextView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:textColor="@color/sgColorGreen"
+            android:textSize="15sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="300dp"
         android:layout_height="350dp"
         android:background="@drawable/border_style"
@@ -20,7 +62,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp"/>
+            app:layout_constraintGuide_begin="20dp"
+            tools:layout_editor_absoluteY="25dp"
+            tools:layout_editor_absoluteX="20dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -38,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="姓名："
             android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="@id/guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline"
             app:layout_constraintRight_toLeftOf="@+id/name_edit"
             app:layout_constraintTop_toBottomOf="@+id/image"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -49,8 +93,8 @@
             android:layout_height="30dp"
             app:layout_constraintLeft_toRightOf="@+id/name"
             app:layout_constraintBottom_toBottomOf="@+id/name"
-            app:layout_constraintRight_toRightOf="@id/guideline"
-            android:background="@drawable/border_style"/>
+            android:background="@drawable/border_style"
+            app:layout_constraintRight_toLeftOf="@+id/guideline" />
 
         <TextView
             android:id="@+id/gender"
@@ -58,7 +102,7 @@
             android:layout_height="wrap_content"
             android:text="性别："
             android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="@id/guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline"
             app:layout_constraintRight_toLeftOf="@+id/gender_edit"
             app:layout_constraintTop_toBottomOf="@+id/name"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -69,8 +113,8 @@
             android:layout_height="30dp"
             app:layout_constraintLeft_toRightOf="@+id/gender"
             app:layout_constraintBottom_toBottomOf="@+id/gender"
-            app:layout_constraintRight_toRightOf="@id/guideline"
-            android:background="@drawable/border_style"/>
+            android:background="@drawable/border_style"
+            app:layout_constraintRight_toLeftOf="@+id/guideline" />
 
         <TextView
             android:id="@+id/life"
@@ -78,7 +122,7 @@
             android:layout_height="wrap_content"
             android:text="生卒年月："
             android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="@id/guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline"
             app:layout_constraintRight_toLeftOf="@+id/born"
             app:layout_constraintTop_toBottomOf="@+id/gender"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -102,15 +146,17 @@
             app:layout_constraintBottom_toBottomOf="@+id/life"
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp" />
         <EditText
             android:id="@+id/die"
             android:layout_width="40dp"
             android:layout_height="30dp"
             app:layout_constraintLeft_toRightOf="@+id/hyphen"
             app:layout_constraintBottom_toBottomOf="@+id/life"
-            app:layout_constraintRight_toRightOf="@+id/guideline"
-            android:background="@drawable/border_style"/>
+            android:background="@drawable/border_style"
+            app:layout_constraintRight_toLeftOf="@+id/guideline" />
 
         <TextView
             android:id="@+id/native_place"
@@ -118,7 +164,7 @@
             android:layout_height="wrap_content"
             android:text="籍贯："
             android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="@id/guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline"
             app:layout_constraintRight_toLeftOf="@+id/native_place_edit"
             app:layout_constraintTop_toBottomOf="@+id/life"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -129,8 +175,8 @@
             android:layout_height="30dp"
             app:layout_constraintLeft_toRightOf="@+id/native_place"
             app:layout_constraintBottom_toBottomOf="@+id/native_place"
-            app:layout_constraintRight_toRightOf="@id/guideline"
-            android:background="@drawable/border_style"/>
+            android:background="@drawable/border_style"
+            app:layout_constraintRight_toLeftOf="@+id/guideline" />
 
         <TextView
             android:id="@+id/power"
@@ -138,7 +184,7 @@
             android:layout_height="wrap_content"
             android:text="主要势力："
             android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="@id/guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline"
             app:layout_constraintRight_toLeftOf="@+id/power_edit"
             app:layout_constraintTop_toBottomOf="@+id/native_place"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -149,8 +195,8 @@
             android:layout_height="30dp"
             app:layout_constraintLeft_toRightOf="@+id/power"
             app:layout_constraintBottom_toBottomOf="@+id/power"
-            app:layout_constraintRight_toRightOf="@id/guideline"
-            android:background="@drawable/border_style"/>
+            android:background="@drawable/border_style"
+            app:layout_constraintRight_toLeftOf="@+id/guideline" />
 
 
     </android.support.constraint.ConstraintLayout>

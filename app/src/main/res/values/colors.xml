@@ -6,4 +6,6 @@
     <color name="sgColorPrimary">#ffa726</color>
     <color name="sgColorPrimaryDark">#ffa726</color>
     <color name="sgColorAccent">#000</color>
+    <color name="sgColorWhite">#fff</color>
+    <color name="sgColorGreen">#90ff00</color>
 </resources>
