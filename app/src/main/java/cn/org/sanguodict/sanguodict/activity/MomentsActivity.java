@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.v4.app.INotificationSideChannel;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.org.sanguodict.sanguodict.R;
@@ -33,6 +35,7 @@ public class MomentsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView toolbarUsericon;
     private ImageView toolbarCamicon;
+    private TextView toolbarTitle;
     private RecyclerView recyclerView;
     private CommonAdapter momentAdapter;
 
@@ -48,13 +51,16 @@ public class MomentsActivity extends AppCompatActivity {
 
     public static final String READ_PERMISSION = "android.permission.READ_EXTERNAL_STORAGE";
 
-    SGApplication instance;
+    private LinearLayoutManager layoutManager;
+
+    private SGApplication instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SGApplication.getInstance().requestPermission(this, READ_PERMISSION, REQ_PERMISSION_CODE);
+        if (SGApplication.getInstance().requestPermission(this, READ_PERMISSION, REQ_PERMISSION_CODE))
+            initEveryThing();
 
         // Init nothing here because permission hasn't been got
     }
@@ -76,6 +82,22 @@ public class MomentsActivity extends AppCompatActivity {
             if (begOnce) return;
             begOnce = true;
             noPermissionDialogBuilder.create().show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_MOMENT_REQ_CODE) {
+            Log.i("Info", "Result from edit moment activity");
+            if (resultCode == RESULT_OK) {
+//                Moment moment = (Moment)data.getSerializableExtra("moment");
+                Moment moment = (Moment) instance.getTempObj();
+                Log.i("Info", "Result OK, Got: " + moment.toString());
+                momentListRef.add(moment);
+                momentAdapter.notifyItemInserted(momentListRef.size() - 1);
+                recyclerView.smoothScrollToPosition(momentListRef.size() - 1);
+            }
         }
     }
 
@@ -105,11 +127,30 @@ public class MomentsActivity extends AppCompatActivity {
             }
         });
 
+        // Set toolbar title -- Just for debug
+        toolbarTitle.setOnClickListener(new View.OnClickListener() {
+            int counter = 0;
+            @Override
+            public void onClick(View v) {
+                ++counter;
+                if (counter % 20 == 0) {
+                    instance._debugDontSave = false;
+                    Toast.makeText(MomentsActivity.this, "DEBUG: 不保存数据", Toast.LENGTH_SHORT).show();
+                } else if (counter % 10 == 0) {
+                    instance._debugDontSave = true;
+                    Toast.makeText(MomentsActivity.this, "DEBUG: 保存数据", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         // Set RecyclerView
         momentListRef = instance.getMoments();
         userListRef = instance.getUsers();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
 
         momentAdapter = new CommonAdapter<Moment>(this, R.layout.moments_item, momentListRef) {
             @Override
@@ -147,18 +188,18 @@ public class MomentsActivity extends AppCompatActivity {
                 contentText.setText(object.contentText);
 
                 // Set Img
-                if (!resUser.avatarBase64.isEmpty()) {
+                if (resUser != null && !resUser.avatarBase64.isEmpty()) {
                     avatar.setImageBitmap(instance.getBitmap(resUser.avatarBase64));
                 } else {
                     Log.i("Info", "No avatar");
                 }
 
-                if (!object.contentImgBase64.isEmpty()) {
+                if (object.contentImgBase64 != null && !object.contentImgBase64.isEmpty()) {
                     contentImg.setImageBitmap(instance.getBitmap(object.contentImgBase64));
                 } else {
                     // if no image
-                    Log.i("Info", "No img");
-                    contentImg.setVisibility(View.INVISIBLE);
+                    Log.i("Info", "No img, set visibility -> gone");
+                    contentImg.setVisibility(View.GONE);
                 }
             }
         };
@@ -193,6 +234,7 @@ public class MomentsActivity extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.activity_moments_toolbar);
         toolbarUsericon = (ImageView)findViewById(R.id.activity_moments_toolbar_usericon);
         toolbarCamicon = (ImageView)findViewById(R.id.activity_moments_toolbar_camicon);
+        toolbarTitle = (TextView)findViewById(R.id.activity_moments_toolbar_title);
         recyclerView = (RecyclerView)findViewById(R.id.activity_moments_recyclerview);
     }
 
@@ -207,7 +249,8 @@ public class MomentsActivity extends AppCompatActivity {
         noPermissionDialogBuilder.setPositiveButton("给你权限", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SGApplication.getInstance().requestPermission(MomentsActivity.this, READ_PERMISSION, REQ_PERMISSION_CODE);
+                if (SGApplication.getInstance().requestPermission(MomentsActivity.this, READ_PERMISSION, REQ_PERMISSION_CODE))
+                    initEveryThing();
             }
         });
         noPermissionDialogBuilder.setNegativeButton("滚", new DialogInterface.OnClickListener() {

@@ -28,4 +28,8 @@ public class User implements Serializable {
         this.nativePlace = nativePlace;
         this.force = force;
     }
+
+    public User() {
+        this(-1, null, null, (char) 0, null, null, null, null);
+    }
 }
