@@ -4,15 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingLeft="12dp"
-    android:paddingRight="12dp">
+    android:paddingRight="12dp"
+    android:paddingTop="12dp">
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/moments_item_left_20_guide"
         app:layout_constraintGuide_begin="24dp"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="24dp" />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -21,9 +24,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:id="@+id/moments_item_avatar"
             android:src="@drawable/ic_account_circle_black_24dp"/>
         <TextView
@@ -32,8 +35,9 @@
             android:id="@+id/moments_item_name"
             android:text="诸葛亮"
             style="@style/SGMomentName"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/moments_item_avatar"/>
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/moments_item_avatar"
+            android:layout_marginLeft="4dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,10 +46,11 @@
             style="@style/SGMomentHeaderGray"
             android:layout_toRightOf="@id/moments_item_avatar"
             android:layout_below="@+id/moments_item_name"
-            android:layout_marginTop="4dp"/>
+            android:layout_alignLeft="@id/moments_item_name"
+            android:layout_marginTop="2dp"/>
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/SGMomentTextSize"
+            android:layout_height="@dimen/SGMomentTextSize"
             android:id="@+id/moments_item_location_icon"
             android:layout_toRightOf="@id/moments_item_time"
             android:layout_alignBottom="@+id/moments_item_time"
@@ -67,6 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/moments_item_moment_header"
         app:layout_constraintLeft_toLeftOf="@+id/moments_item_left_20_guide"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="4dp"
         style="@style/SGMomentContent"
         android:text="今天刘备来了我家三次\n换个行试试\n溢出一行看看看看看看看看看看看看看看看看看看看看看看看"/>
     <ImageView
@@ -75,6 +81,16 @@
         android:id="@+id/moments_item_content_img"
         app:layout_constraintTop_toBottomOf="@+id/moments_item_content_text"
         app:layout_constraintLeft_toLeftOf="@+id/moments_item_left_20_guide"
-        android:maxWidth="100dp"
+        android:layout_marginTop="16dp"
+        android:maxWidth="256dp"
+        android:adjustViewBounds="true"
         android:src="@drawable/ic_image_gray"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="2px"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moments_item_content_img"
+        android:layout_marginTop="16dp"/>
 </android.support.constraint.ConstraintLayout>
