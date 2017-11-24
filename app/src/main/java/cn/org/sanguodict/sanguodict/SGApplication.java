@@ -199,12 +199,20 @@ public class SGApplication extends Application {
     }
 
     public void addUser(User user) {
-        user.userId = userList.getLast().userId + 1;
+        if (userList.isEmpty()) {
+            user.userId = 1;
+        } else {
+            user.userId = userList.getLast().userId + 1;
+        }
         userList.add(user);
     }
 
     public void addMoment(Moment moment) {
-        moment.momentId = momentList.getLast().momentId + 1;
+        if (momentList.isEmpty()) {
+            moment.momentId = 1;
+        } else {
+            moment.momentId = momentList.getLast().momentId + 1;
+        }
         momentList.add(moment);
     }
 

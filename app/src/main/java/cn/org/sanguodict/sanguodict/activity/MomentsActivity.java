@@ -106,7 +106,8 @@ public class MomentsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.i("Info", "On Pause, should save everything");
-        instance.saveEverything();
+        if (instance != null)
+            instance.saveEverything();
     }
 
     // Util Functions
