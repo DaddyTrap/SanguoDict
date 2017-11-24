@@ -10,28 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/activity_moments_toolbar"
-        android:background="?attr/colorPrimary">
+        android:background="@color/sgColorPrimary">
         <ImageView
             android:layout_width="@dimen/SGToolBarImgSize"
             android:layout_height="@dimen/SGToolBarImgSize"
             android:id="@+id/activity_moments_toolbar_usericon"
             android:layout_gravity="left"
-            android:src="@drawable/ic_account_circle_black_24dp"/>
+            android:src="@drawable/ic_account_circle_white_24dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:id="@+id/activity_moments_toolbar_title"
-            android:text="今日三国"
-            android:textSize="24dp"
-            android:textColor="@android:color/black"/>
+            android:text="@string/moment_title"
+            style="@style/SGToolBarTitle"
+            android:textColor="@android:color/white"/>
         <ImageView
             android:layout_width="@dimen/SGToolBarImgSize"
             android:layout_height="@dimen/SGToolBarImgSize"
             android:id="@+id/activity_moments_toolbar_camicon"
             android:layout_gravity="right"
             android:layout_marginRight="@dimen/SGToolBarBorderMargin"
-            android:src="@drawable/ic_photo_camera_black_24dp"/>
+            android:src="@drawable/ic_photo_camera_white_24dp"/>
     </android.support.v7.widget.Toolbar>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

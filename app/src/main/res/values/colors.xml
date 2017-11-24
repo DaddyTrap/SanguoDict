@@ -3,9 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="sgColorPrimary">#ffa726</color>
-    <color name="sgColorPrimaryDark">#ffa726</color>
+    <color name="sgColorPrimary">#eb3f2f</color>
+    <color name="sgColorPrimaryDark">#eb3f2f</color>
     <color name="sgColorAccent">#000</color>
     <color name="sgColorWhite">#fff</color>
     <color name="sgColorGreen">#90ff00</color>
+
+    <color name="sgColorLink">#3f51b5</color>
+    <color name="sgColorDarkGray">#c9c1c9</color>
+    <color name="sgColorLightGray">#d6d4d6</color>
+    <color name="sgColorButton">#f2505a</color>
 </resources>

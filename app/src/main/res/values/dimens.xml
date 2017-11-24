@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="SGMomentTextSize">18dp</dimen>
+    <dimen name="SGMomentTextSize">14dp</dimen>
+    <dimen name="SGSmallIconSize">18sp</dimen>
     <dimen name="SGToolBarImgSize">26dp</dimen>
     <dimen name="SGToolBarBorderMargin">12dp</dimen>
+    <dimen name="SGEditMomentAlignLeft">16dp</dimen>
 </resources>

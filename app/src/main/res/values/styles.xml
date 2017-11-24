@@ -17,12 +17,16 @@
     </style>
 
     <style name="SGMomentHeaderGray" parent="SGMomentText">
-        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textColor">@color/sgColorDarkGray</item>
     </style>
 
     <style name="SGMomentName" parent="SGMomentText">
-        <item name="android:textColor">@android:color/holo_blue_dark</item>
-        <item name="android:colorPressedHighlight">@android:color/holo_blue_bright</item>
+        <item name="android:textColor">@color/sgColorLink</item>
     </style>
 
+    <style name="SGToolBarTitle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

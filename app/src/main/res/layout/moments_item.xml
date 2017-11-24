@@ -48,22 +48,17 @@
             android:layout_below="@+id/moments_item_name"
             android:layout_alignLeft="@id/moments_item_name"
             android:layout_marginTop="2dp"/>
-        <ImageView
-            android:layout_width="@dimen/SGMomentTextSize"
-            android:layout_height="@dimen/SGMomentTextSize"
-            android:id="@+id/moments_item_location_icon"
-            android:layout_toRightOf="@id/moments_item_time"
-            android:layout_alignBottom="@+id/moments_item_time"
-            android:src="@drawable/ic_location_on_gray_24dp"
-            android:layout_marginLeft="12dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/moments_item_location"
             android:text="某个茅庐"
+            android:layout_marginRight="100dp"
             style="@style/SGMomentHeaderGray"
-            android:layout_toRightOf="@id/moments_item_location_icon"
-            android:layout_alignBottom="@+id/moments_item_location_icon"/>
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/ic_location_on_gray"
+            android:layout_alignBottom="@+id/moments_item_time"
+            android:gravity="center"/>
     </RelativeLayout>
     <TextView
         android:layout_width="0dp"
