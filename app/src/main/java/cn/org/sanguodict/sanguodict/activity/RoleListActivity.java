@@ -5,15 +5,20 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,11 +58,13 @@ public class RoleListActivity extends AppCompatActivity {
     private static SGApplication mSgApp = SGApplication.getInstance();
 
     private List<SelectableUser> mSelectableUserListRef;
+    private List<User> mUserListRef;
     private CommonAdapter<SelectableUser> mRoleListAdaper;
 
     private RecyclerView mRoleListView;
+    private EditText mSearchInput;
 
-    private ImageView mBackButton, mSearchButton, mAddButton, mSearchBackButton;
+    private ImageView mBackButton, mSearchButton, mAddButton, mSearchBackButton, mMoreButton, mDeleteButton;
     private LinearLayout mSearchBanner;
     private boolean mIsSelecting = false, mSearchEnabled = false;
 
@@ -65,11 +72,14 @@ public class RoleListActivity extends AppCompatActivity {
         mBackButton = (ImageView) findViewById(R.id.role_list_bar_icon_back);
         mSearchButton = (ImageView) findViewById(R.id.role_list_bar_icon_search);
         mAddButton = (ImageView) findViewById(R.id.role_list_bar_icon_add);
+        mMoreButton = (ImageView) findViewById(R.id.role_list_bar_icon_more);
+        mDeleteButton = (ImageView) findViewById(R.id.role_list_bar_icon_delete);
 
         mSearchBanner = (LinearLayout) findViewById(R.id.role_list_search);
         mSearchBackButton = (ImageView) findViewById(R.id.role_list_search_icon_back);
 
         mRoleListView = (RecyclerView) findViewById(R.id.role_list_panel);
+        mSearchInput = (EditText) findViewById(R.id.role_list_search_input);
     }
 
     private static final int REQUEST_USER_DETAIL = 10000;
@@ -77,8 +87,8 @@ public class RoleListActivity extends AppCompatActivity {
     private void initListView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRoleListView.setLayoutManager(linearLayoutManager);
-
-        mSelectableUserListRef = RoleListActivity.convertToSelectableList(mSgApp.getUsers());
+        mUserListRef = mSgApp.getUsers();
+        mSelectableUserListRef = RoleListActivity.convertToSelectableList(mUserListRef);
         mRoleListAdaper = new CommonAdapter<SelectableUser>(this, R.layout.role_list_item, mSelectableUserListRef) {
             @Override
             public void convert(ViewHolder holder, final SelectableUser selectableUser) {
@@ -98,8 +108,8 @@ public class RoleListActivity extends AppCompatActivity {
                 } else {
                     select.setVisibility(View.VISIBLE);
                 }
-                select.setChecked(isSelected);
-                if (select.hasOnClickListeners()) return;
+                RoleListActivity.setCheckBox(select, isSelected);
+
                 select.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -126,6 +136,7 @@ public class RoleListActivity extends AppCompatActivity {
                 if (!RoleListActivity.this.mIsSelecting) {
                     RoleListActivity.this.mIsSelecting = true;
                     RoleListActivity.this.mRoleListAdaper.notifyDataSetChanged();
+                    RoleListActivity.this.setBarIcon(true);
                 }
             }
         });
@@ -162,6 +173,56 @@ public class RoleListActivity extends AppCompatActivity {
                 RoleListActivity.this.closeSearchLayout();
             }
         });
+        mSearchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d(TAG, "Search Text Changed");
+                RoleListActivity.this.searchFilter(s.toString());
+            }
+        });
+
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RoleListActivity.this.deleteSelected();
+            }
+        });
+        mMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(RoleListActivity.this, mMoreButton);
+                popup.inflate(R.menu.role_list_delete_popup_menu);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.role_list_popup_select_all:
+                                RoleListActivity.this.selectAll();
+                                break;
+                            case R.id.role_list_popup_unselect_all:
+                                RoleListActivity.this.unSelectAll();
+                                break;
+                            case R.id.role_list_popup_negative_select:
+                                RoleListActivity.this.negativeSelect();
+                                break;
+                        }
+                        RoleListActivity.this.mRoleListAdaper.notifyDataSetChanged();
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
     public static List<SelectableUser> convertToSelectableList(List<User> users) {
@@ -170,6 +231,29 @@ public class RoleListActivity extends AppCompatActivity {
             selectableList.add(new SelectableUser(false, user));
         }
         return selectableList;
+    }
+
+    private void searchFilter(String search) {
+        // 恢复现场
+        mSelectableUserListRef.clear();
+        for (User user : mUserListRef) {
+            String gender = "";
+            switch (user.gender) {
+                case 1:
+                    gender = "男";
+                    break;
+                case 2:
+                    gender = "女";
+                    break;
+            }
+            if (user.name.contains(search)
+                    || user.force.contains(search)
+                    || user.nativePlace.contains(search)
+                    || gender.equals(search)) {
+                mSelectableUserListRef.add(new SelectableUser(false, user));
+            }
+        }
+        mRoleListAdaper.notifyDataSetChanged();
     }
 
     private void showSearchLayout() {
@@ -188,14 +272,64 @@ public class RoleListActivity extends AppCompatActivity {
     private void closeSearchLayout() {
         mSearchBanner.setVisibility(View.GONE);
         mSearchEnabled = false;
+        mSelectableUserListRef.clear();
+        mSelectableUserListRef.addAll(RoleListActivity.convertToSelectableList(mUserListRef));
+        mRoleListAdaper.notifyDataSetChanged();
     }
 
     private void cancelSelect() {
         mIsSelecting = false;
+        unSelectAll();
+        setBarIcon();
+        mRoleListAdaper.notifyDataSetChanged();
+    }
+
+    private void setBarIcon() {
+        setBarIcon(false);
+    }
+    private void setBarIcon(boolean showSelectMore) {
+        int normalIconVisibility = showSelectMore ? View.GONE : View.VISIBLE;
+        int selectIconVisibility = showSelectMore ? View.VISIBLE : View.GONE;
+        mAddButton.setVisibility(normalIconVisibility);
+        mSearchButton.setVisibility(normalIconVisibility);
+        mDeleteButton.setVisibility(selectIconVisibility);
+        mMoreButton.setVisibility(selectIconVisibility);
+    }
+
+    private void selectAll() {
+        for (SelectableUser user : mSelectableUserListRef) {
+            user.isSelected = true;
+        }
+    }
+
+    private void unSelectAll() {
         for (SelectableUser user : mSelectableUserListRef) {
             user.isSelected = false;
         }
+    }
+
+    private void negativeSelect() {
+        for (SelectableUser user : mSelectableUserListRef) {
+            user.isSelected = !user.isSelected;
+        }
+    }
+
+    private void deleteSelected() {
+        List<SelectableUser> deleteUsers = new LinkedList<>();
+        for (SelectableUser user : mSelectableUserListRef) {
+            if (user.isSelected) {
+                deleteUsers.add(user);
+            }
+        }
+        for (SelectableUser deleteUser : deleteUsers) {
+            deleteOneUser(deleteUser);
+        }
         mRoleListAdaper.notifyDataSetChanged();
+    }
+
+    private void deleteOneUser(SelectableUser suser) {
+        mUserListRef.remove(suser.user);
+        mSelectableUserListRef.remove(suser);
     }
 
     private void sendUserDetailIntent(int userId) {
@@ -221,6 +355,21 @@ public class RoleListActivity extends AppCompatActivity {
         if (requestCode == REQUEST_USER_DETAIL && resultCode == RESULT_OK) {
             mRoleListAdaper.notifyDataSetChanged();
         }
+    }
+
+    private static void setCheckBox(final CheckBox checkBox, boolean selected) {
+        if (checkBox.isChecked() != selected) {
+            checkBox.setChecked(selected);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mUserListRef = mSgApp.getUsers();
+        mSelectableUserListRef.clear();
+        mSelectableUserListRef.addAll(RoleListActivity.convertToSelectableList(mUserListRef));
+        mRoleListAdaper.notifyDataSetChanged();
     }
 
     static private String TAG = RoleListActivity.class.getCanonicalName();

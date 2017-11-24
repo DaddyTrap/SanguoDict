@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/role_list_popup_select_all"
+        android:icon="@drawable/l_check_all_blk"
+        
+        android:title="@string/role_list_popup_select_all" />
+    <item
+        android:id="@+id/role_list_popup_negative_select"
+        android:icon="@drawable/ic_check_circle_white_24dp"
+        android:title="@string/role_list_popup_negative_select" />
+
+    <item
+        android:id="@+id/role_list_popup_unselect_all"
+        android:icon="@drawable/ic_radio_button_unchecked_white_24dp"
+        android:title="@string/role_list_popup_unselect_all" />
+</menu>

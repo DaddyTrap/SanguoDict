@@ -8,4 +8,10 @@
     <string name="save">保存</string>
 
     <string name="moment_title">今日三国</string>
+
+    <string name="role_list_title">角色列表</string>
+    <string name="role_list_deleting_title">删除角色</string>
+    <string name="role_list_popup_select_all">全选</string>
+    <string name="role_list_popup_unselect_all">取消全选</string>
+    <string name="role_list_popup_negative_select">反选</string>
 </resources>

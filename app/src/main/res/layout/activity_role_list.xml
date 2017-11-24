@@ -18,16 +18,17 @@
             android:layout_width="@dimen/SGToolBarImgSize"
             android:layout_height="@dimen/SGToolBarImgSize"
             android:src="@drawable/ic_arrow_back_white_24dp"
-            android:layout_gravity="left"
-            />
+            android:layout_gravity="left"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:id="@+id/role_list_toolbar_title"
-            android:text="角色列表"
+            android:text="@string/role_list_title"
             android:textSize="24dp"
             android:textColor="@android:color/white"/>
+
         <ImageView
             android:layout_width="@dimen/SGToolBarImgSize"
             android:layout_height="@dimen/SGToolBarImgSize"
@@ -42,6 +43,23 @@
             android:layout_marginEnd="@dimen/SGToolBarBorderMargin"
             android:src="@drawable/ic_search_white_24dp"
             android:layout_gravity="right"/>
+        <ImageView
+            android:layout_width="@dimen/SGToolBarImgSize"
+            android:layout_height="@dimen/SGToolBarImgSize"
+            android:visibility="gone"
+            android:src="@drawable/ic_more_vert_white_24dp"
+            android:id="@+id/role_list_bar_icon_more"
+            android:layout_marginEnd="@dimen/SGToolBarBorderMargin"
+            android:layout_gravity="right"/>
+        <ImageView
+            android:layout_width="@dimen/SGToolBarImgSize"
+            android:layout_height="@dimen/SGToolBarImgSize"
+            android:visibility="gone"
+            android:src="@drawable/ic_delete_forever_white_24dp"
+            android:id="@+id/role_list_bar_icon_delete"
+            android:layout_marginEnd="@dimen/SGToolBarBorderMargin"
+            android:layout_gravity="right"/>
+
     </android.support.v7.widget.Toolbar>
     <LinearLayout
         android:id="@+id/role_list_search"
@@ -69,25 +87,22 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:layout_gravity="center"/>
-            <TextView
+            <EditText
+                android:id="@+id/role_list_search_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textCursorDrawable="@color/sgColorPrimary"
-                android:layout_marginBottom="10dp"/>
+                android:textCursorDrawable="@color/sgColorPrimary"/>
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@android:color/darker_gray"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/role_list_panel"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/role_list_bar">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/role_list_bar">
 
     </android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>
