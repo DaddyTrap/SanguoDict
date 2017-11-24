@@ -47,6 +47,8 @@ public class MomentsActivity extends AppCompatActivity {
 
     public static final int EDIT_MOMENT_REQ_CODE = 1001;
 
+    public static final int SHOW_USER_LIST = 1002;
+
     public static final int REQ_PERMISSION_CODE = 101;
 
     public static final String READ_PERMISSION = "android.permission.READ_EXTERNAL_STORAGE";
@@ -134,6 +136,8 @@ public class MomentsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i("Info", "Clicked usericon, go to user list activity");
                 // TODO: Click usericon will go to user list activity
+                Intent intent = new Intent(MomentsActivity.this, RoleListActivity.class);
+                startActivityForResult(intent, SHOW_USER_LIST);
             }
         });
 
