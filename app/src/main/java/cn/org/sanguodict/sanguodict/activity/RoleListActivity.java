@@ -1,5 +1,6 @@
 package cn.org.sanguodict.sanguodict.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import cn.org.sanguodict.sanguodict.viewholder.ViewHolder;
 public class RoleListActivity extends AppCompatActivity {
 
     static private class SelectableUser  {
+
         public boolean isSelected;
         public User user;
         public Bitmap avatarBitmap;
@@ -45,7 +48,6 @@ public class RoleListActivity extends AppCompatActivity {
             }
         }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +60,12 @@ public class RoleListActivity extends AppCompatActivity {
     private static SGApplication mSgApp = SGApplication.getInstance();
 
     private List<SelectableUser> mSelectableUserListRef;
+
     private List<User> mUserListRef;
     private CommonAdapter<SelectableUser> mRoleListAdaper;
-
     private RecyclerView mRoleListView;
+
+    private TextView mTitle;
     private EditText mSearchInput;
 
     private ImageView mBackButton, mSearchButton, mAddButton, mSearchBackButton, mMoreButton, mDeleteButton;
@@ -69,13 +73,14 @@ public class RoleListActivity extends AppCompatActivity {
     private boolean mIsSelecting = false, mSearchEnabled = false;
 
     private void getViews() {
+        mTitle = (TextView) findViewById(R.id.role_list_toolbar_title);
         mBackButton = (ImageView) findViewById(R.id.role_list_bar_icon_back);
         mSearchButton = (ImageView) findViewById(R.id.role_list_bar_icon_search);
         mAddButton = (ImageView) findViewById(R.id.role_list_bar_icon_add);
         mMoreButton = (ImageView) findViewById(R.id.role_list_bar_icon_more);
         mDeleteButton = (ImageView) findViewById(R.id.role_list_bar_icon_delete);
 
-        mSearchBanner = (LinearLayout) findViewById(R.id.role_list_search);
+        mSearchBanner = (LinearLayout) findViewById(R.id.role_list_search_panel);
         mSearchBackButton = (ImageView) findViewById(R.id.role_list_search_icon_back);
 
         mRoleListView = (RecyclerView) findViewById(R.id.role_list_panel);
@@ -137,6 +142,7 @@ public class RoleListActivity extends AppCompatActivity {
                     RoleListActivity.this.mIsSelecting = true;
                     RoleListActivity.this.mRoleListAdaper.notifyDataSetChanged();
                     RoleListActivity.this.setBarIcon(true);
+                    RoleListActivity.this.mTitle.setText(R.string.role_list_deleting_title);
                 }
             }
         });
@@ -225,6 +231,18 @@ public class RoleListActivity extends AppCompatActivity {
         });
     }
 
+    private void editTextGetFocus(final EditText text) {
+        text.requestFocus();
+        text.post(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager manager = (InputMethodManager) text.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.showSoftInput(text, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+        text.setSelection(text.getText().length());
+    }
+
     public static List<SelectableUser> convertToSelectableList(List<User> users) {
         List<SelectableUser> selectableList = new LinkedList<>();
         for (User user : users) {
@@ -267,6 +285,7 @@ public class RoleListActivity extends AppCompatActivity {
         }
         mSearchEnabled = true;
         mSearchBanner.setVisibility(View.VISIBLE);
+        editTextGetFocus(mSearchInput);
     }
 
     private void closeSearchLayout() {
@@ -281,12 +300,13 @@ public class RoleListActivity extends AppCompatActivity {
         mIsSelecting = false;
         unSelectAll();
         setBarIcon();
+        mTitle.setText(R.string.role_list_title);
         mRoleListAdaper.notifyDataSetChanged();
     }
-
     private void setBarIcon() {
         setBarIcon(false);
     }
+
     private void setBarIcon(boolean showSelectMore) {
         int normalIconVisibility = showSelectMore ? View.GONE : View.VISIBLE;
         int selectIconVisibility = showSelectMore ? View.VISIBLE : View.GONE;
