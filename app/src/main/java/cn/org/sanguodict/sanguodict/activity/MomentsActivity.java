@@ -110,7 +110,6 @@ public class MomentsActivity extends AppCompatActivity {
         Log.i("Info", "On Pause, should save everything");
         if (instance != null)
             instance.saveEverything();
-        Log.i("Info", "Saved");
     }
 
     // Util Functions
