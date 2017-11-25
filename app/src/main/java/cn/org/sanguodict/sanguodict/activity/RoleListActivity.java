@@ -373,6 +373,8 @@ public class RoleListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_USER_DETAIL && resultCode == RESULT_OK) {
+            mSelectableUserListRef.clear();
+            mSelectableUserListRef.addAll(RoleListActivity.convertToSelectableList(mUserListRef));
             mRoleListAdaper.notifyDataSetChanged();
         }
     }
