@@ -51,9 +51,11 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
 
         Intent intent = getIntent();
-        if (intent.getExtras().getString("id") != null) {
-            id = intent.getExtras().getInt("id");
-        }
+
+        id = intent.getExtras().getInt("id");
+        Log.d("id", "" + id);
+
+        Log.d("EditActivity", "Start");
         initial();
     }
 
@@ -81,9 +83,9 @@ public class EditActivity extends AppCompatActivity {
             user = instance.findUserWithId(id);
             name.setText(user.name);
             if (user.gender == 1) {
-                gender.setSelection(1);
+                gender.setSelection(0);
             } else if (user.gender == 2) {
-                gender.setSelection(2);
+                gender.setSelection(1);
             }
             image.setImageBitmap(instance.getBitmap(user.avatarBase64));
             born.setText(user.birthDate);
@@ -103,7 +105,11 @@ public class EditActivity extends AppCompatActivity {
                 user.deathDate = die.getText().toString();
                 user.nativePlace = native_place.getText().toString();
                 user.force = power.getText().toString();
-                instance.addUser(user);
+                if (id < 0) {
+                    instance.addUser(user);
+                } else {
+                    instance.updateUser(id, user);
+                }
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -127,14 +133,19 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        gender.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     user.gender = 1;
                 } else if (position == 2) {
                     user.gender = 2;
                 }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }

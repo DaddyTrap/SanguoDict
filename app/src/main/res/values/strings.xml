@@ -8,7 +8,7 @@
     <string name="save" translatable="false">保存</string>
 
     <string name="moment_title" translatable="false">今日三国</string>
-    
+
     <string-array name="gender">
         <item>男</item>
         <item>女</item>
@@ -18,4 +18,12 @@
     <string name="role_list_popup_select_all" translatable="false">全选</string>
     <string name="role_list_popup_unselect_all" translatable="false">取消全选</string>
     <string name="role_list_popup_negative_select" translatable="false">反选</string>
+
+    <string name="edit_title">人物编辑</string>
+    <string name="edit_name">姓名：</string>
+    <string name="edit_gender">性别：</string>
+    <string name="edit_birth_death">生卒年月：</string>
+    <string name="edit_native_place">籍贯：</string>
+    <string name="edit_power">主要势力：</string>
+    <string name="edit_hyphen">-</string>
 </resources>

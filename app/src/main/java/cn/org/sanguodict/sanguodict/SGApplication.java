@@ -207,6 +207,16 @@ public class SGApplication extends Application {
         userList.add(user);
     }
 
+    public void updateUser(int id, User user) {
+        user.userId = id;
+        for (User user1 : userList) {
+            if (user1.userId == id) {
+                user1 = user;
+                break;
+            }
+        }
+    }
+
     public void addMoment(Moment moment) {
         if (momentList.isEmpty()) {
             moment.momentId = 1;
