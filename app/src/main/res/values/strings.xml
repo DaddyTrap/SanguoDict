@@ -8,4 +8,9 @@
     <string name="save">保存</string>
 
     <string name="moment_title">今日三国</string>
+
+    <string-array name="gender">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
 </resources>
