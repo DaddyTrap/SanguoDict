@@ -112,6 +112,15 @@ public class MomentsActivity extends AppCompatActivity {
             instance.saveEverything();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (momentAdapter != null)
+            synchronized (momentAdapter) {
+                momentAdapter.notifyDataSetChanged();
+            }
+    }
+
     // Util Functions
 
     private void initEveryThing() {
@@ -150,10 +159,10 @@ public class MomentsActivity extends AppCompatActivity {
                 ++counter;
                 if (counter % 20 == 0) {
                     instance._debugDontSave = false;
-                    Toast.makeText(MomentsActivity.this, "DEBUG: 不保存数据", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MomentsActivity.this, "DEBUG: 保存数据", Toast.LENGTH_SHORT).show();
                 } else if (counter % 10 == 0) {
                     instance._debugDontSave = true;
-                    Toast.makeText(MomentsActivity.this, "DEBUG: 保存数据", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MomentsActivity.this, "DEBUG: 不保存数据", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -211,9 +220,10 @@ public class MomentsActivity extends AppCompatActivity {
 
                 if (object.contentImgBase64 != null && !object.contentImgBase64.isEmpty()) {
                     contentImg.setImageBitmap(instance.getBitmap(object.contentImgBase64));
+                    contentImg.setVisibility(View.VISIBLE);
                 } else {
                     // if no image
-                    Log.i("Info", "No img, set visibility -> gone");
+                    Log.i("Info", "No img for \"" + object.contentText + "\" , set visibility -> gone");
                     contentImg.setVisibility(View.GONE);
                 }
             }

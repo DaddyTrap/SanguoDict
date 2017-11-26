@@ -348,7 +348,8 @@ public class RoleListActivity extends AppCompatActivity {
     }
 
     private void deleteOneUser(SelectableUser suser) {
-        mUserListRef.remove(suser.user);
+        // mUserListRef.remove(suser.user);
+        mSgApp.deleteUser(suser.user.userId);
         mSelectableUserListRef.remove(suser);
     }
 

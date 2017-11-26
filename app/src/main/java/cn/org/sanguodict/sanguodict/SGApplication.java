@@ -3,6 +3,7 @@ package cn.org.sanguodict.sanguodict;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -35,6 +36,7 @@ public class SGApplication extends Application {
     private LinkedList<Moment> momentList;
     private LinkedList<User> userList;
     private int currentUserId;
+
 
     // Used to transport large data -- Intent cannot save too large data
     private Object tempObj;
@@ -217,6 +219,17 @@ public class SGApplication extends Application {
         }
     }
 
+    public void deleteUser(int userId) {
+        for (int i = 0; i < userList.size(); ++i) {
+            if (userList.get(i).userId == userId) {
+                userList.remove(i);
+                // cascade
+                deleteMomentWithUserId(userId);
+                return;
+            }
+        }
+    }
+
     public void addMoment(Moment moment) {
         if (momentList.isEmpty()) {
             moment.momentId = 1;
@@ -224,6 +237,27 @@ public class SGApplication extends Application {
             moment.momentId = momentList.getLast().momentId + 1;
         }
         momentList.add(moment);
+    }
+
+    public void deleteMoment(int momentId) {
+        for (int i = 0; i < momentList.size(); ++i) {
+            if (momentList.get(i).momentId == momentId) {
+                momentList.remove(i);
+                return;
+            }
+        }
+    }
+
+    public void deleteMomentWithUserId(int userId) {
+        List<Integer> toDeleteIds = new LinkedList<>();
+        for (Moment moment : momentList) {
+            if (moment.fromUser == userId) {
+                toDeleteIds.add(moment.momentId);
+            }
+        }
+        for (int i : toDeleteIds) {
+            deleteMoment(i);
+        }
     }
 
     public void saveEverything() {
