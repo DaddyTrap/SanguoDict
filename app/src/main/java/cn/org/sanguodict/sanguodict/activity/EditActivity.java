@@ -191,4 +191,10 @@ public class EditActivity extends AppCompatActivity {
         }
         return byteBuffer.toByteArray();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (instance != null) instance.saveEverything();
+    }
 }

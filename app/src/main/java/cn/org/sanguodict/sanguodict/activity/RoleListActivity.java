@@ -372,6 +372,12 @@ public class RoleListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (mSgApp != null) mSgApp.saveEverything();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_USER_DETAIL && resultCode == RESULT_OK) {
             mSelectableUserListRef.clear();

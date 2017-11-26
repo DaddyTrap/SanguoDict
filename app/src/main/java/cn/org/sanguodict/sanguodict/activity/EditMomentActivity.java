@@ -1,5 +1,6 @@
 package cn.org.sanguodict.sanguodict.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -65,6 +66,8 @@ public class EditMomentActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQ_CODE = 1002;
 
+    private AlertDialog curDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,14 @@ public class EditMomentActivity extends AppCompatActivity {
 
         // Set up alert dialog builder
         dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+//                userSearchRes = (List<User>) ((LinkedList<User>) instance.getUsers()).clone();
+                userSearchRes.clear();
+                userSearchRes.addAll(instance.getUsers());
+            }
+        });
         final LayoutInflater inflater = this.getLayoutInflater();
         final CommonAdapter<User> adapter = new CommonAdapter<User>(EditMomentActivity.this, R.layout.choose_user_item, userSearchRes) {
             @Override
@@ -102,11 +113,12 @@ public class EditMomentActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                User user = instance.getUsers().get(position);
+                User user = userSearchRes.get(position);
                 instance.setCurrentUserId(user.userId);
                 EditMomentActivity.this.thisUser = user;
                 Log.i("Info", "Chosen user id: " + user.userId);
                 updateUserView();
+                curDialog.dismiss();
             }
 
             @Override
@@ -146,7 +158,8 @@ public class EditMomentActivity extends AppCompatActivity {
                 });
 
                 // Show dialog
-                dialogBuilder.create().show();
+                curDialog = dialogBuilder.create();
+                curDialog.show();
             }
         });
 
